@@ -107,7 +107,7 @@ const submitOrder = () => {
 	padding: 24px;
 	position: relative;
 	min-height: 86vh;
-	min-inline-size: 375px;
+	min-inline-size: 250px;
 	max-inline-size: 1280px;
 	margin: 0 auto;
 }
