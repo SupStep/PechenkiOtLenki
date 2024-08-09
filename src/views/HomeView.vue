@@ -101,7 +101,7 @@ const toCatalog = () => {
 }
 .carousel {
 	height: 340px;
-	min-inline-size: 375px;
+	min-inline-size: 250px;
 	max-inline-size: 1280px;
 	margin: 0 auto;
 }
@@ -136,7 +136,7 @@ const toCatalog = () => {
 }
 
 .section {
-	min-inline-size: 375px;
+	min-inline-size: 250px;
 	max-inline-size: 1280px;
 	margin: 0 auto;
 	padding: 24px 24px;
@@ -152,7 +152,7 @@ const toCatalog = () => {
 
 .section__explain-container {
 	padding: 24px 24px;
-	min-inline-size: 375px;
+	min-inline-size: 250px;
 	max-inline-size: 1280px;
 	margin: 0 auto;
 	display: flex;
@@ -244,13 +244,29 @@ const toCatalog = () => {
 }
 
 .gallery__item {
-	background-image: url('../../cookies.jpg');
 	background-size: cover;
 	background-position: center;
 	border-radius: 10px;
 	width: 100%;
 	height: 100%;
+	min-height: 250px;
 	object-fit: cover;
+}
+
+.gallery__item:nth-child(2) {
+	background-image: url('/gallery__img1.jpg');
+}
+
+.gallery__item:nth-child(3) {
+	background-image: url('/gallery__img2.jpg');
+}
+
+.gallery__item:nth-child(4) {
+	background-image: url('/gallery__img3.jpg');
+}
+
+.gallery__item:nth-child(5) {
+	background-image: url('/gallery__img4.jpg');
 }
 
 .gallery__item:first-child {
@@ -368,6 +384,20 @@ const toCatalog = () => {
 
 	.section__explain .section__item-text {
 		font-size: 20px;
+	}
+}
+
+@media (max-width: 425px) {
+	.gallery__wrapper {
+		display: flex;
+		align-items: center;
+		width: 100%;
+		flex-direction: column;
+		gap: 12px;
+	}
+
+	.gallery__item {
+		width: 90%;
 	}
 }
 </style>

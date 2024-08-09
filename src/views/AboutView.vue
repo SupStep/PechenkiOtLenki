@@ -173,7 +173,7 @@
 
 	.page__title {
 		font-size: 22px;
-		margin-bottom: 12px;
+		margin-bottom: 6px;
 	}
 
 	.page__img {
@@ -183,7 +183,7 @@
 	}
 
 	.page__text {
-		font-size: 16px;
+		font-size: 18px;
 	}
 
 	.page__text::first-letter {
@@ -197,5 +197,8 @@
 	.quote__wrapper i {
 		font-size: 16px;
 	}
+}
+
+@media (max-width: 768px) {
 }
 </style>

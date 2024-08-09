@@ -112,6 +112,18 @@ const submitOrder = () => {
 	margin: 0 auto;
 }
 
+.page__title {
+	font-size: 38px;
+	font-weight: 600;
+	background-image: linear-gradient(#000000, #000000);
+	background-repeat: no-repeat;
+	background-size: 80px 2px;
+	background-position: left bottom;
+	padding-bottom: 2px;
+	text-decoration: none;
+	margin-bottom: 24px;
+}
+
 .cart__message {
 	font-size: 24px;
 	position: absolute;
@@ -194,6 +206,13 @@ const submitOrder = () => {
 @media (max-width: 768px) {
 	.cart__item-list {
 		width: 100%;
+	}
+}
+
+@media (max-width: 425px) {
+	.page__title {
+		font-size: 26px;
+		margin-bottom: 6px;
 	}
 }
 </style>

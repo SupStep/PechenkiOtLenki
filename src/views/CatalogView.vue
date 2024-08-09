@@ -38,7 +38,7 @@ onMounted(async () => {
 })
 </script>
 
-<style>
+<style scoped>
 .section__catalog-title {
 	text-align: left;
 	margin: 12px 0;
@@ -59,5 +59,17 @@ onMounted(async () => {
 	padding-bottom: 2px;
 	text-decoration: none;
 	margin-bottom: 24px;
+}
+
+@media (max-width: 425px) {
+	.page__title {
+		font-size: 26px;
+		margin-bottom: 6px;
+	}
+
+	.section__catalog-title {
+		margin: 6px 0;
+		font-size: 22px;
+	}
 }
 </style>

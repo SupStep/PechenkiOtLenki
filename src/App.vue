@@ -2,7 +2,7 @@
 	<header>
 		<div class="header__container">
 			<div class="header__logo-wrapper">
-				<component @click="toHome" :is="logo"></component>
+				<component class="logo__icon" @click="toHome" :is="logo"></component>
 			</div>
 			<nav class="header__menu">
 				<ul class="header__menu-list">
@@ -24,7 +24,11 @@
 							v-if="isCartNotEmpty"
 							class="header__submenu-item-circle"
 						></div>
-						<component @click="toCart" :is="cart"></component>
+						<component
+							class="cart__icon"
+							@click="toCart"
+							:is="cart"
+						></component>
 					</li>
 				</ul>
 			</nav>
@@ -41,7 +45,7 @@
 	<footer>
 		<div class="footer__container">
 			<div class="footer__logo-wrapper">
-				<logo />
+				<component class="logo__icon" @click="toHome" :is="logo"></component>
 			</div>
 			<nav class="footer__menu">
 				<ul class="footer__info-list">
@@ -76,13 +80,16 @@
 							<a
 								href="https://www.instagram.com/pechenkiotlenki?igsh=MXAwMXVqc2V3OGxmcg%3D%3D&utm_source=qr"
 							>
-								<component :is="instagram_logo"></component>
+								<component
+									class="footer__icon"
+									:is="instagram_logo"
+								></component>
 							</a>
 							<p>@pechenkiotlenki</p>
 						</li>
 						<li class="footer__icon-item">
 							<a href="https://web.telegram.org/k/#@pechenki_otLenki">
-								<component :is="telegram_logo"></component>
+								<component class="footer__icon" :is="telegram_logo"></component>
 							</a>
 							<p>для связи</p>
 						</li>
@@ -90,13 +97,13 @@
 					<ul>
 						<li class="footer__icon-item">
 							<a href="https://t.me/pechenki_SLenkoi">
-								<component :is="telegram_logo"></component>
+								<component class="footer__icon" :is="telegram_logo"></component>
 							</a>
 							<p>канал</p>
 						</li>
 						<li class="footer__icon-item">
 							<span href="">
-								<component :is="whatsapp_logo"></component>
+								<component class="footer__icon" :is="whatsapp_logo"></component>
 							</span>
 							<p>+79262100253</p>
 						</li>
@@ -151,7 +158,7 @@ main {
 }
 
 .header__container {
-	min-inline-size: 375px;
+	min-inline-size: 250px;
 	max-inline-size: 1280px;
 	margin: 0 auto;
 	padding: 0px 24px;
@@ -202,7 +209,7 @@ footer {
 }
 
 .footer__container {
-	min-inline-size: 375px;
+	min-inline-size: 250px;
 	max-inline-size: 1280px;
 	margin: 0 auto;
 	padding: 12px 24px;
@@ -282,10 +289,29 @@ footer {
 
 @media (max-width: 425px) {
 	.header__container {
-		padding: 0 12px;
+		padding: 0;
 	}
 	.header__menu-item a {
 		font-size: 12px;
+	}
+
+	.footer__container {
+		padding: 12px;
+	}
+
+	.logo__icon {
+		width: 56px;
+	}
+	.cart__icon {
+		width: 32px;
+	}
+
+	.footer__info-list {
+		gap: 6px;
+	}
+
+	.footer__icon {
+		width: 30px;
 	}
 }
 </style>
