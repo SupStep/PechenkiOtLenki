@@ -10,7 +10,7 @@
 				class="card__img"
 				:style="{
 					backgroundImage:
-						'url(http://localhost:3000/photos/' +
+						'url(https://supstep-serverpechenki-db33.twc1.net/photos/' +
 						(item.photos.length ? item.photos[0] : 'default.jpg') +
 						')',
 				}"
@@ -106,6 +106,9 @@ const bodyStyle = computed(() => {
 	if (width < 768) {
 		modalWidth = '80%'
 	}
+	if (width < 425) {
+		modalWidth = '95%'
+	}
 
 	return { width: modalWidth, height: modalHeight }
 })
@@ -176,7 +179,7 @@ const bodyStyle = computed(() => {
 .carousel {
 	width: 100%;
 	height: 340px;
-	min-width: 280px;
+	min-width: 250px;
 	max-height: 380px;
 	min-height: 320px;
 	aspect-ratio: 4/2;
@@ -244,6 +247,9 @@ const bodyStyle = computed(() => {
 }
 
 @media (max-width: 425px) {
+	.carousel {
+		width: 100%;
+	}
 	.card__description {
 		font-size: 14px;
 	}
