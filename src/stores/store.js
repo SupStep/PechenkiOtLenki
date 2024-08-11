@@ -3,7 +3,7 @@ import { defineStore } from 'pinia'
 import { ref } from 'vue'
 
 export const useStore = defineStore('pechenki', () => {
-	const apiBaseUrl = 'http://localhost:3000/api'
+	const apiBaseUrl = 'https://supstep-serverpechenki-db33.twc1.net/api'
 	const botToken = '7005259421:AAGhVHBJaR5ELuSAsVA9UxBRkYA1zhVJg2A'
 	const chatId = '6033326324'
 	const cartItems = ref([])

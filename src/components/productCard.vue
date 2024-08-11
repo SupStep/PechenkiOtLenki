@@ -48,13 +48,15 @@
 							v-for="(photo, index) in selectedItem.photos"
 							:key="index"
 							class="carousel-img"
-							:src="'http://localhost:3000/photos/' + photo"
+							:src="
+								'https://supstep-serverpechenki-db33.twc1.net/photos/' + photo
+							"
 						/>
 					</template>
 					<template v-if="!selectedItem.photos.length">
 						<img
 							class="carousel-img"
-							:src="'http://localhost:3000/photos/default.jpg'"
+							:src="'https://supstep-serverpechenki-db33.twc1.net/photos/default.jpg'"
 						/>
 					</template>
 				</n-carousel>
