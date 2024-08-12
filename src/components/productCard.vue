@@ -96,7 +96,7 @@ const addToCard = item => {
 const bodyStyle = computed(() => {
 	const width = window.innerWidth
 	let modalWidth = '30%'
-	let modalHeight = '90vh'
+
 	if (width < 1100) {
 		modalWidth = '40%'
 	}
