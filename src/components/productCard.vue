@@ -67,6 +67,7 @@
 					<p v-if="selectedItem.composition">
 						Состав: {{ selectedItem.composition }}
 					</p>
+					<p>Цена: {{ selectedItem.price }}</p>
 				</div>
 			</div>
 		</template>
