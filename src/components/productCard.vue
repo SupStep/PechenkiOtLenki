@@ -130,6 +130,9 @@ const bodyStyle = computed(() => {
 	border-radius: 20px;
 	color: #fff;
 	transition: transform 0.3s ease, box-shadow 0.3s ease;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
 }
 
 .card:hover {
@@ -143,6 +146,10 @@ const bodyStyle = computed(() => {
 	width: 100%;
 	height: 200px;
 	border-radius: 20px 20px 0 0;
+}
+
+.card__text-wrapper {
+	flex-grow: 1;
 }
 
 .card__pay-wrapper {

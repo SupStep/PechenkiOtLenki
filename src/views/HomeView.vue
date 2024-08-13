@@ -29,8 +29,8 @@
 				<Button @click="toCatalog" title="купить рецепт" />
 			</div>
 			<div class="section__item">
-				<h3 class="section__item-title">Супер боксы на все случаи жизни</h3>
-				<Button @click="toCatalog" title="купить бокс" />
+				<h3 class="section__item-title">Продажа готового печенья</h3>
+				<Button @click="toCatalog" title="купить печенье" />
 			</div>
 		</div>
 	</section>
