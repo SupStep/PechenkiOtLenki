@@ -111,7 +111,7 @@ const bodyStyle = computed(() => {
 		modalWidth = '95%'
 	}
 
-	return { width: modalWidth, height: modalHeight }
+	return { width: modalWidth }
 })
 </script>
 
