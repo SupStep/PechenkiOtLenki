@@ -9,13 +9,13 @@
 			</n-carousel-item>
 			<n-carousel-item class="carousel-item second">
 				<div>
-					<h1>Печенье и многое другое по уникальным рецептам</h1>
+					<h1>Печенье и многое другое по оригинальным рецептам</h1>
 					<Button @click="toCatalog" title="Подробнее" />
 				</div>
 			</n-carousel-item>
 			<n-carousel-item class="carousel-item third">
 				<div>
-					<h1>Научитесь создавать уникальные рецепты вместе со мной</h1>
+					<h1>Научитесь создавать свои рецепты вместе со мной</h1>
 					<Button @click="toCatalog" title="Подробнее" />
 				</div>
 			</n-carousel-item>
@@ -25,11 +25,11 @@
 		<h2 class="section__title">Что я предлагаю?</h2>
 		<div class="section__container">
 			<div class="section__item">
-				<h3 class="section__item-title">Уникальные рецепты печенья</h3>
+				<h3 class="section__item-title">Оригинальные рецепты печенья</h3>
 				<Button @click="toCatalog" title="купить рецепт" />
 			</div>
 			<div class="section__item">
-				<h3 class="section__item-title">Продажа готового печенья</h3>
+				<h3 class="section__item-title">Продажа наборов печенья</h3>
 				<Button @click="toCatalog" title="купить печенье" />
 			</div>
 		</div>
@@ -49,8 +49,7 @@
 				<article class="section__item">
 					<h3 class="section__item-title">Богатый опыт работы</h3>
 					<p class="section__item-text">
-						Постоянно провожу живые МК, а также общаюсь с онлайн студентами.
-						Знаю частые ошибки и пути их преодоления.
+						Постоянно провожу живые мастер классы! Знаю частые ошибки и пути их исправления. Могу провести и для вас МК!
 					</p>
 				</article>
 				<article class="section__item">
