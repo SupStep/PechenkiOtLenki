@@ -41,35 +41,117 @@
 		size="small"
 	>
 		<template v-if="selectedItem">
-			<div class="modal__container">
-				<n-carousel show-arrow class="carousel">
-					<template v-if="selectedItem.photos.length">
-						<img
-							v-for="(photo, index) in selectedItem.photos"
-							:key="index"
-							class="carousel-img"
-							:src="
-								'https://supstep-serverpechenki-db33.twc1.net/photos/' + photo
-							"
-						/>
-					</template>
-					<template v-if="!selectedItem.photos.length">
-						<img
-							class="carousel-img"
-							:src="'https://supstep-serverpechenki-db33.twc1.net/photos/default.jpg'"
-						/>
-					</template>
-				</n-carousel>
-				<div class="modal__info-wrapper">
-					<p v-if="selectedItem.description">{{ selectedItem.description }}</p>
-					<p v-else>{{ selectedItem.structure }}</p>
+			<n-infinite-scroll style="max-height: 80vh" :distance="10">
+				<div class="modal__container">
+					<n-carousel show-arrow class="carousel">
+						<template v-if="selectedItem.photos.length">
+							<img
+								v-for="(photo, index) in selectedItem.photos"
+								:key="index"
+								class="carousel-img"
+								:src="
+									'https://supstep-serverpechenki-db33.twc1.net/photos/' + photo
+								"
+							/>
+						</template>
+						<template v-if="!selectedItem.photos.length">
+							<img
+								class="carousel-img"
+								:src="'https://supstep-serverpechenki-db33.twc1.net/photos/default.jpg'"
+							/>
+						</template>
+						<template #arrow="{ prev, next }">
+							<div class="custom-arrow">
+								<button type="button" class="custom-arrow--left" @click="prev">
+									<component :is="arrow_back"></component>
+								</button>
+								<button type="button" class="custom-arrow--right" @click="next">
+									<component :is="arrow_forward"></component>
+								</button>
+							</div>
+						</template>
+					</n-carousel>
+					<div class="modal__info-wrapper">
+						<p v-if="selectedItem.description">
+							{{ selectedItem.description }}
+						</p>
+						<p v-else>{{ selectedItem.structure }}</p>
 
-					<p v-if="selectedItem.composition">
-						Состав: {{ selectedItem.composition }}
-					</p>
-					<p>Цена: {{ selectedItem.price }}</p>
+						<p v-if="selectedItem.composition">
+							Состав: {{ selectedItem.composition }}
+						</p>
+						<p>Цена: {{ selectedItem.price }}</p>
+					</div>
 				</div>
-			</div>
+			</n-infinite-scroll>
+		</template>
+	</n-modal>
+
+	<n-modal
+		v-model:show="showModalBox"
+		class="custom-card"
+		preset="card"
+		:style="bodyStyle"
+		:title="selectedBox.name"
+		:bordered="false"
+		size="small"
+	>
+		<template v-if="selectedBox">
+			<n-infinite-scroll style="max-height: 80vh" :distance="10">
+				<div class="modal__container">
+					<n-carousel :show-dots="false" show-arrow class="carousel">
+						<template v-if="selectedBox.photos.length || selectedBox.structure">
+							<div class="carousel-slide">
+								<img
+									v-if="selectedBox.photos.length"
+									class="carouselBox-img"
+									:src="
+										'https://supstep-serverpechenki-db33.twc1.net/photos/' +
+										selectedBox.photos[0]
+									"
+								/>
+								<p
+									v-if="selectedBox.structure"
+									class="carousel-description box"
+								>
+									{{ selectedBox.structure }}
+								</p>
+							</div>
+						</template>
+
+						<template v-if="selectedBox.items.length">
+							<template v-for="(item, index) in selectedBox.items" :key="index">
+								<div class="carousel-slide">
+									<img
+										v-if="item.photos.length"
+										class="carouselBox-img"
+										:src="
+											'https://supstep-serverpechenki-db33.twc1.net/photos/' +
+											item.photos[0]
+										"
+									/>
+									<p v-if="item.description" class="carousel-description box">
+										{{ item.description }}
+									</p>
+								</div>
+							</template>
+						</template>
+						<template #arrow="{ prev, next }">
+							<div class="custom-arrow_box">
+								<button type="button" class="custom-arrow--left" @click="prev">
+									<component :is="arrow_back"></component>
+								</button>
+								<button type="button" class="custom-arrow--right" @click="next">
+									<component :is="arrow_forward"></component>
+								</button>
+							</div>
+						</template>
+					</n-carousel>
+					<div class="modal__info-wrapper">
+						<p>Цена: {{ selectedBox.price }}</p>
+					</div>
+				</div>
+			</n-infinite-scroll>
 		</template>
 	</n-modal>
 </template>
@@ -78,15 +160,27 @@
 import Button from '@/components/Button.vue'
 import { useStore } from '@/stores/store'
 import { computed, defineProps, ref } from 'vue'
+import arrow_back from './icons/arrow_back.vue'
+import arrow_forward from './icons/arrow_forward.vue'
 const props = defineProps({
 	data: Array,
 })
 
 const showModal = ref(false)
+const showModalBox = ref(false)
+
 const selectedItem = ref([])
+const selectedBox = ref([])
 const openModal = item => {
-	selectedItem.value = item
-	showModal.value = true
+	if (item.items && item.items.length) {
+		// Это бокс
+		selectedBox.value = item
+		showModalBox.value = true
+	} else {
+		// Это обычный товар
+		selectedItem.value = item
+		showModal.value = true
+	}
 }
 const store = useStore()
 
@@ -199,13 +293,20 @@ const bodyStyle = computed(() => {
 	object-fit: cover;
 }
 
+.carouselBox-img {
+	width: 100%;
+	height: 260px;
+	object-fit: cover;
+}
+
+.box {
+	padding: 0 6px;
+}
+
 .modal__container {
 	display: flex;
 	flex-direction: column;
 	gap: 12px;
-	max-height: 80vh;
-	overflow-y: auto;
-	box-sizing: border-box;
 }
 
 .modal__info-wrapper {
@@ -223,6 +324,32 @@ const bodyStyle = computed(() => {
 .modal__info-wrapper span {
 	align-self: end;
 	font-weight: bold;
+}
+
+.carousel-slide {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.custom-arrow {
+	display: flex;
+	gap: 12px;
+	position: absolute;
+	bottom: 5px;
+	right: 16px;
+}
+
+.custom-arrow_box {
+	display: flex;
+	gap: 12px;
+	position: absolute;
+	bottom: 85px;
+	right: 16px;
+}
+
+.custom-arrow button {
+	cursor: pointer;
 }
 
 @media (max-width: 1000px) {

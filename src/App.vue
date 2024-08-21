@@ -35,7 +35,7 @@
 		</div>
 	</header>
 
-	<n-config-provider>
+	<n-config-provider :theme-overrides="themeOverrides">
 		<n-modal-provider>
 			<main>
 				<RouterView />
@@ -120,9 +120,21 @@ import instagram_logo from '@/components/icons/instagram_logo.vue'
 import logo from '@/components/icons/logo.vue'
 import telegram_logo from '@/components/icons/telegram_logo.vue'
 import whatsapp_logo from '@/components/icons/whatsapp_logo.vue'
+import { NConfigProvider } from 'naive-ui'
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
 import { useStore } from './stores/store'
+
+const themeOverrides = {
+	Carousel: {
+		dotColor: '#cae8c4FF',
+		dotColorActive: '#668567FF',
+	},
+	BackTop: {
+		iconColorHover: '#95b88eFF',
+		iconColorPressed: '#667E62FF',
+	},
+}
 
 const store = useStore()
 const router = useRouter()

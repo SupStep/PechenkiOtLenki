@@ -16,9 +16,19 @@
 			<n-carousel-item class="carousel-item third">
 				<div>
 					<h1>Научитесь создавать свои рецепты вместе со мной</h1>
-					<Button @click="toCatalog" title="Подробнее" />
+					<Button @click="toCatalogFilter('Рецепты')" title="Подробнее" />
 				</div>
 			</n-carousel-item>
+			<template #arrow="{ prev, next }">
+				<div class="custom-arrow">
+					<button type="button" class="custom-arrow--left" @click="prev">
+						<component :is="arrow_back"></component>
+					</button>
+					<button type="button" class="custom-arrow--right" @click="next">
+						<component :is="arrow_forward"></component>
+					</button>
+				</div>
+			</template>
 		</n-carousel>
 	</div>
 	<section class="section section__offer">
@@ -26,11 +36,11 @@
 		<div class="section__container">
 			<div class="section__item">
 				<h3 class="section__item-title">Оригинальные рецепты печенья</h3>
-				<Button @click="toCatalog" title="купить рецепт" />
+				<Button @click="toCatalogFilter('Рецепты')" title="купить рецепт" />
 			</div>
 			<div class="section__item">
 				<h3 class="section__item-title">Продажа наборов печенья</h3>
-				<Button @click="toCatalog" title="купить печенье" />
+				<Button @click="toCatalogFilter('Боксы')" title="купить печенье" />
 			</div>
 		</div>
 	</section>
@@ -85,12 +95,21 @@
 </template>
 
 <script setup>
+import arrow_back from '@/components/icons/arrow_back.vue'
+import arrow_forward from '@/components/icons/arrow_forward.vue'
 import { useRouter } from 'vue-router'
 import Button from '../components/Button.vue'
 const router = useRouter()
 
 const toCatalog = () => {
 	router.push('catalog')
+}
+
+const toCatalogFilter = filterType => {
+	router.push({
+		path: '/catalog',
+		query: { filter: filterType },
+	})
 }
 </script>
 
@@ -273,6 +292,18 @@ const toCatalog = () => {
 	background: none;
 	grid-row-start: 1;
 	grid-row-end: 3;
+}
+
+.custom-arrow {
+	display: flex;
+	gap: 12px;
+	position: absolute;
+	bottom: 5px;
+	right: 16px;
+}
+
+.custom-arrow button {
+	cursor: pointer;
 }
 
 @media (max-width: 1000px) {

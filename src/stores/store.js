@@ -116,6 +116,19 @@ ${itemsList}
 		}
 	}
 
+	async function editProduct(productId, updatedData) {
+		try {
+			const response = await axios.put(
+				`${apiBaseUrl}/${productId}`,
+				updatedData
+			)
+			return response.data
+		} catch (error) {
+			console.error('Error editing product:', error)
+			throw error
+		}
+	}
+
 	return {
 		auth,
 		getAllProduct,
@@ -126,5 +139,6 @@ ${itemsList}
 		clearCart,
 		cartItems,
 		sendOrder,
+		editProduct,
 	}
 })

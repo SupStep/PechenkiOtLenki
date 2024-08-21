@@ -17,7 +17,9 @@
 			<h1 class="page__title">Панель</h1>
 
 			<!-- Форма создания нового товара -->
-			<h2 class="admin__title">Создать новый товар</h2>
+			<h2 class="admin__title">
+				{{ editingProduct ? 'Редактировать товар' : 'Создать новый товар' }}
+			</h2>
 			<form class="form__create">
 				<label for="type">Тип:</label>
 				<select v-model="newProduct.type" required>
@@ -79,10 +81,61 @@
 					placeholder="Структура бокса"
 				></textarea>
 
-				<label for="photo">Фотография:</label>
+				<label for="photo">Фотография товара:</label>
 				<input type="file" multiple @change="handleFileUpload" />
 
-				<Button @click.prevent="createProduct" title="Создать" />
+				<label v-if="newProduct.type === 'box'">Элементы бокса:</label>
+				<div v-if="newProduct.type === 'box'">
+					<div
+						v-for="(item, index) in newProduct.items"
+						:key="index"
+						class="box-item"
+					>
+						<h3>Элемент {{ index + 1 }}</h3>
+						<div
+							style="
+								display: flex;
+								gap: 12px;
+								align-items: center;
+								margin-bottom: 12px;
+							"
+						>
+							<label for="itemDescription">Описание элемента:</label>
+							<textarea
+								v-model="item.description"
+								placeholder="Описание элемента"
+								required
+							></textarea>
+						</div>
+
+						<label style="margin-top: 12px" for="itemPhotos"
+							>Фотографии элемента:</label
+						>
+						<input
+							style="margin-bottom: 12px"
+							type="file"
+							multiple
+							@change="handleItemFileUpload($event, index)"
+						/>
+
+						<Button
+							@click.prevent="removeItem(index)"
+							title="Удалить элемент"
+							style="margin-bottom: 12px"
+						/>
+					</div>
+					<Button @click.prevent="addItem" title="Добавить элемент" />
+				</div>
+
+				<Button
+					@click.prevent="editingProduct ? updateProduct() : createProduct()"
+					:title="editingProduct ? 'Сохранить' : 'Создать'"
+				/>
+				<Button
+					v-if="editingProduct"
+					@click.prevent="cancelEditing"
+					title="Отмена"
+				/>
 			</form>
 
 			<!-- Рецепты -->
@@ -94,6 +147,7 @@
 					:key="item.id"
 				>
 					<p>{{ item.name }}</p>
+					<Button @click="startEditing(item, 'recipe')" title="Редактировать" />
 					<Button @click="deleteProduct(item.id, 'recipe')" title="удалить" />
 				</div>
 			</div>
@@ -103,6 +157,7 @@
 			<div class="admin__item-wrapper">
 				<div class="admin__item" v-for="item in products.boxes" :key="item.id">
 					<p>{{ item.name }}</p>
+					<Button @click="startEditing(item, 'box')" title="Редактировать" />
 					<Button @click="deleteProduct(item.id, 'box')" title="удалить" />
 				</div>
 			</div>
@@ -124,6 +179,10 @@
 							:key="item.id"
 						>
 							<p>{{ item.name }}</p>
+							<Button
+								@click="startEditing(item, 'product')"
+								title="Редактировать"
+							/>
 							<Button
 								@click="deleteProduct(item.id, 'product')"
 								title="удалить"
@@ -154,8 +213,62 @@ const newProduct = ref({
 	price: '',
 	section: '',
 	structure: '',
-	photo: null,
+	photos: [],
+	items: [],
 })
+
+const editingProduct = ref(null)
+const startEditing = (product, type) => {
+	editingProduct.value = { ...product, type }
+	newProduct.value = { ...editingProduct.value }
+}
+
+const cancelEditing = () => {
+	editingProduct.value = null
+	newProduct.value = {
+		type: 'product',
+		name: '',
+		description: '',
+		composition: '',
+		price: '',
+		section: '',
+		structure: '',
+		photos: [],
+		items: [],
+	}
+}
+
+const updateProduct = async () => {
+	try {
+		const updatedData = {
+			type: newProduct.value.type,
+			name: newProduct.value.name,
+			description: newProduct.value.description,
+			composition: newProduct.value.composition,
+			price: newProduct.value.price,
+			section: newProduct.value.section,
+			structure: newProduct.value.structure,
+			items: newProduct.value.items,
+		}
+
+		await store.editProduct(editingProduct.value.id, updatedData)
+		await fetchProducts()
+		cancelEditing()
+	} catch (error) {
+		console.error('Error updating product:', error)
+	}
+}
+
+const addItem = () => {
+	newProduct.value.items.push({
+		description: '',
+		itemPhotos: [],
+	})
+}
+
+const removeItem = index => {
+	newProduct.value.items.splice(index, 1)
+}
 
 const login = async () => {
 	try {
@@ -183,17 +296,19 @@ const createProduct = async () => {
 	try {
 		const formData = new FormData()
 		for (const key in newProduct.value) {
-			if (
-				newProduct.value[key] !== null &&
-				newProduct.value[key] !== undefined
-			) {
-				if (key === 'photos') {
-					for (let i = 0; i < newProduct.value.photos.length; i++) {
-						formData.append('photos', newProduct.value.photos[i])
-					}
-				} else {
-					formData.append(key, newProduct.value[key])
-				}
+			if (key === 'photos') {
+				newProduct.value.photos.forEach(photo =>
+					formData.append('photos', photo)
+				)
+			} else if (key === 'items') {
+				newProduct.value.items.forEach((item, index) => {
+					formData.append(`items[${index}][description]`, item.description)
+					item.itemPhotos.forEach((photo, photoIndex) => {
+						formData.append(`items[${index}][itemPhotos][${photoIndex}]`, photo)
+					})
+				})
+			} else {
+				formData.append(key, newProduct.value[key])
 			}
 		}
 
@@ -210,6 +325,7 @@ const createProduct = async () => {
 			section: '',
 			structure: '',
 			photos: [],
+			items: [],
 		}
 	} catch (error) {
 		console.error('Error creating product:', error)
@@ -220,6 +336,13 @@ const handleFileUpload = event => {
 	const files = event.target.files
 	if (files.length) {
 		newProduct.value.photos = Array.from(files)
+	}
+}
+
+const handleItemFileUpload = (event, index) => {
+	const files = event.target.files
+	if (files.length) {
+		newProduct.value.items[index].itemPhotos = Array.from(files)
 	}
 }
 
