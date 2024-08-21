@@ -128,6 +128,7 @@
 				</div>
 
 				<Button
+					style="margin-right: 12px"
 					@click.prevent="editingProduct ? updateProduct() : createProduct()"
 					:title="editingProduct ? 'Сохранить' : 'Создать'"
 				/>
