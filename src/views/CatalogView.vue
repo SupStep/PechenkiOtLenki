@@ -104,7 +104,7 @@ onMounted(async () => {
 	try {
 		const data = await store.getAllProduct()
 		products.value = data
-		console.log(products.value)
+		
 		if (route.query.filter) {
 			filterValue.value = route.query.filter
 		}
