@@ -1,6 +1,6 @@
 <template>
 	<n-back-top :right="0" :bottom="50" style="z-index: 20" />
-	<div class="page__container">
+	<div v-if="!isLoading" class="page__container">
 		<h1 class="page__title">КАТАЛОГ</h1>
 		<nav class="filter__menu">
 			<button @click="toggleMenu" class="filter__button">
@@ -76,6 +76,8 @@ const store = useStore()
 const products = ref([])
 const isOpen = ref(false)
 
+const isLoading = ref(true)
+
 const toggleMenu = () => {
 	isOpen.value = !isOpen.value
 }
@@ -104,11 +106,14 @@ onMounted(async () => {
 	try {
 		const data = await store.getAllProduct()
 		products.value = data
-		
+
 		if (route.query.filter) {
 			filterValue.value = route.query.filter
 		}
 		window.scrollTo(0, 0)
+		if (products.value) {
+			isLoading.value = false
+		}
 	} catch (error) {
 		console.error('Error fetching products:', error)
 	}

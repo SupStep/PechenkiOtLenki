@@ -43,7 +43,7 @@
 		<template v-if="selectedItem">
 			<n-infinite-scroll style="max-height: 80vh" :distance="10">
 				<div class="modal__container">
-					<n-carousel show-arrow class="carousel">
+					<n-carousel show-arrow class="carousel" :slides-per-view="1">
 						<template v-if="selectedItem.photos.length">
 							<img
 								v-for="(photo, index) in selectedItem.photos"
@@ -99,7 +99,12 @@
 		<template v-if="selectedBox">
 			<n-infinite-scroll style="max-height: 80vh" :distance="10">
 				<div class="modal__container">
-					<n-carousel :show-dots="false" show-arrow class="carousel">
+					<n-carousel
+						:show-dots="false"
+						show-arrow
+						class="carousel"
+						:space-between="8"
+					>
 						<template v-if="selectedBox.photos.length || selectedBox.structure">
 							<div class="carousel-slide">
 								<img
@@ -284,7 +289,7 @@ const bodyStyle = computed(() => {
 	min-width: 250px;
 	max-height: 380px;
 	min-height: 320px;
-	aspect-ratio: 4/2;
+	aspect-ratio: 2/1;
 }
 
 .carousel-img {
@@ -329,6 +334,7 @@ const bodyStyle = computed(() => {
 .carousel-slide {
 	display: flex;
 	flex-direction: column;
+	margin-left: 8px;
 	gap: 12px;
 }
 

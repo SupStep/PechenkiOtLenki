@@ -116,12 +116,11 @@ ${itemsList}
 		}
 	}
 
-	async function editProduct(productId, updatedData) {
+	async function editProduct(productId, formData) {
 		try {
-			const response = await axios.put(
-				`${apiBaseUrl}/${productId}`,
-				updatedData
-			)
+			const response = await axios.put(`${apiBaseUrl}/${productId}`, formData, {
+				headers: { 'Content-Type': 'multipart/form-data' },
+			})
 			return response.data
 		} catch (error) {
 			console.error('Error editing product:', error)

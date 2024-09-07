@@ -40,7 +40,7 @@
 			</div>
 			<div class="section__item">
 				<h3 class="section__item-title">Продажа наборов печенья</h3>
-				<Button @click="toCatalogFilter('Боксы')" title="купить печенье" />
+				<Button @click="toCatalogFilter('Печенья')" title="купить печенье" />
 			</div>
 		</div>
 	</section>

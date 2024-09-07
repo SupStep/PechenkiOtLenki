@@ -241,19 +241,46 @@ const cancelEditing = () => {
 
 const updateProduct = async () => {
 	try {
-		const updatedData = {
-			type: newProduct.value.type,
-			name: newProduct.value.name,
-			description: newProduct.value.description,
-			composition: newProduct.value.composition,
-			price: newProduct.value.price,
-			section: newProduct.value.section,
-			structure: newProduct.value.structure,
-			items: newProduct.value.items,
+		const formData = new FormData()
+
+		// Перебираем все ключи newProduct.value
+		for (const key in newProduct.value) {
+			if (key === 'photos') {
+				// Если есть новые фотографии бокса, добавляем их в formData
+				if (newProduct.value.photos && newProduct.value.photos.length > 0) {
+					newProduct.value.photos.forEach(photo => {
+						formData.append('photos', photo)
+					})
+				}
+			} else if (key === 'items') {
+				// Перебираем каждый элемент бокса
+				newProduct.value.items.forEach((item, index) => {
+					// Всегда обновляем описание элементов
+					formData.append(`items[${index}][description]`, item.description)
+
+					// Если есть новые фотографии для элемента, добавляем их
+					if (item.itemPhotos && item.itemPhotos.length > 0) {
+						item.itemPhotos.forEach((photo, photoIndex) => {
+							formData.append(
+								`items[${index}][itemPhotos][${photoIndex}]`,
+								photo
+							)
+						})
+					}
+				})
+			} else {
+				// Добавляем остальные ключи (имя, описание и т.д.)
+				formData.append(key, newProduct.value[key])
+			}
 		}
 
-		await store.editProduct(editingProduct.value.id, updatedData)
+		// Вызываем API для обновления продукта
+		await store.editProduct(editingProduct.value.id, formData)
+
+		// Обновляем список продуктов
 		await fetchProducts()
+
+		// Отменяем режим редактирования
 		cancelEditing()
 	} catch (error) {
 		console.error('Error updating product:', error)
