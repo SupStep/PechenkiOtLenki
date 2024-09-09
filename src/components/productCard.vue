@@ -10,7 +10,7 @@
 				class="card__img"
 				:style="{
 					backgroundImage:
-						'url(https://supstep-serverpechenki-db33.twc1.net/photos/' +
+						'url(https://supstep-serverpechenki-4819.twc1.net/photos/' +
 						(item.photos.length ? item.photos[0] : 'default.jpg') +
 						')',
 				}"
@@ -50,14 +50,14 @@
 								:key="index"
 								class="carousel-img"
 								:src="
-									'https://supstep-serverpechenki-db33.twc1.net/photos/' + photo
+									'https://supstep-serverpechenki-4819.twc1.net/photos/' + photo
 								"
 							/>
 						</template>
 						<template v-if="!selectedItem.photos.length">
 							<img
 								class="carousel-img"
-								:src="'https://supstep-serverpechenki-db33.twc1.net/photos/default.jpg'"
+								:src="'https://supstep-serverpechenki-4819.twc1.net/photos/default.jpg'"
 							/>
 						</template>
 						<template #arrow="{ prev, next }">
@@ -111,7 +111,7 @@
 									v-if="selectedBox.photos.length"
 									class="carouselBox-img"
 									:src="
-										'https://supstep-serverpechenki-db33.twc1.net/photos/' +
+										'https://supstep-serverpechenki-4819.twc1.net/photos/' +
 										selectedBox.photos[0]
 									"
 								/>
@@ -131,7 +131,7 @@
 										v-if="item.photos.length"
 										class="carouselBox-img"
 										:src="
-											'https://supstep-serverpechenki-db33.twc1.net/photos/' +
+											'https://supstep-serverpechenki-4819.twc1.net/photos/' +
 											item.photos[0]
 										"
 									/>
