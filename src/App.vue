@@ -134,6 +134,9 @@ const themeOverrides = {
 		iconColorHover: '#95b88eFF',
 		iconColorPressed: '#667E62FF',
 	},
+	Spin: {
+		color: '#95b88eFF',
+	},
 }
 
 const store = useStore()

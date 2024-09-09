@@ -80,7 +80,7 @@
 						<p v-if="selectedItem.composition">
 							Состав: {{ selectedItem.composition }}
 						</p>
-						<p>Цена: {{ selectedItem.price }}</p>
+						<p>Цена: {{ selectedItem.price }}₽</p>
 					</div>
 				</div>
 			</n-infinite-scroll>
@@ -153,7 +153,7 @@
 						</template>
 					</n-carousel>
 					<div class="modal__info-wrapper">
-						<p>Цена: {{ selectedBox.price }}</p>
+						<p>Цена: {{ selectedBox.price }}₽</p>
 					</div>
 				</div>
 			</n-infinite-scroll>

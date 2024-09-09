@@ -1,5 +1,16 @@
 <template>
 	<n-back-top :right="0" :bottom="50" style="z-index: 20" />
+	<div
+		v-if="isLoading"
+		style="
+			height: 90vh;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		"
+	>
+		<n-spin></n-spin>
+	</div>
 	<div v-if="!isLoading" class="page__container">
 		<h1 class="page__title">КАТАЛОГ</h1>
 		<nav class="filter__menu">
