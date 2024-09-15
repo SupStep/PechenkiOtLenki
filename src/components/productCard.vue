@@ -392,7 +392,7 @@ const bodyStyle = computed(() => {
 @media (max-width: 425px) {
 	.carousel {
 		width: 100%;
-		height: 80vh;
+		height: 420px;
 	}
 	.card__description {
 		font-size: 14px;
