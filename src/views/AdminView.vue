@@ -26,21 +26,29 @@
 					<option value="product">Продукт</option>
 					<option value="recipe">Рецепт</option>
 					<option value="box">Бокс</option>
+					<option value="boxItem">Элемент бокса</option>
 				</select>
 
-				<label for="name">Название:</label>
+				<label
+					v-if="newProduct.type !== 'boxItem' && newProduct.type !== 'boxItem'"
+					for="name"
+					>Название:</label
+				>
 				<input
+					v-if="newProduct.type !== 'boxItem' && newProduct.type !== 'boxItem'"
 					v-model="newProduct.name"
 					type="text"
 					placeholder="Название"
 					required
 				/>
 
-				<label v-if="newProduct.type !== 'box'" for="description"
+				<label
+					v-if="newProduct.type !== 'box' && newProduct.type !== 'boxItem'"
+					for="description"
 					>Описание:</label
 				>
 				<textarea
-					v-if="newProduct.type !== 'box'"
+					v-if="newProduct.type !== 'box' && newProduct.type !== 'boxItem'"
 					v-model="newProduct.description"
 					placeholder="Описание"
 				></textarea>
@@ -54,8 +62,13 @@
 					placeholder="Состав (для продуктов)"
 				></textarea>
 
-				<label for="price">Цена:</label>
+				<label
+					v-if="newProduct.type !== 'boxItem' && newProduct.type !== 'boxItem'"
+					for="price"
+					>Цена:</label
+				>
 				<input
+					v-if="newProduct.type !== 'boxItem' && newProduct.type !== 'boxItem'"
 					v-model="newProduct.price"
 					type="number"
 					placeholder="Цена"
@@ -81,51 +94,30 @@
 					placeholder="Структура бокса"
 				></textarea>
 
+				<label v-if="newProduct.type === 'boxItem'" for="box"
+					>Выберите бокс:</label
+				>
+				<select
+					v-if="newProduct.type === 'boxItem'"
+					v-model="newProduct.boxId"
+					required
+				>
+					<option v-for="box in products.boxes" :key="box.id" :value="box.id">
+						{{ box.name }}
+					</option>
+				</select>
+
+				<label v-if="newProduct.type === 'boxItem'" for="description"
+					>Описание элемента:</label
+				>
+				<textarea
+					v-if="newProduct.type === 'boxItem'"
+					v-model="newProduct.description"
+					placeholder="Описание элемента бокса"
+				></textarea>
+
 				<label for="photo">Фотография товара:</label>
 				<input type="file" multiple @change="handleFileUpload" />
-
-				<label v-if="newProduct.type === 'box'">Элементы бокса:</label>
-				<div v-if="newProduct.type === 'box'">
-					<div
-						v-for="(item, index) in newProduct.items"
-						:key="index"
-						class="box-item"
-					>
-						<h3>Элемент {{ index + 1 }}</h3>
-						<div
-							style="
-								display: flex;
-								gap: 12px;
-								align-items: center;
-								margin-bottom: 12px;
-							"
-						>
-							<label for="itemDescription">Описание элемента:</label>
-							<textarea
-								v-model="item.description"
-								placeholder="Описание элемента"
-								required
-							></textarea>
-						</div>
-
-						<label style="margin-top: 12px" for="itemPhotos"
-							>Фотографии элемента:</label
-						>
-						<input
-							style="margin-bottom: 12px"
-							type="file"
-							multiple
-							@change="handleItemFileUpload($event, index)"
-						/>
-
-						<Button
-							@click.prevent="removeItem(index)"
-							title="Удалить элемент"
-							style="margin-bottom: 12px"
-						/>
-					</div>
-					<Button @click.prevent="addItem" title="Добавить элемент" />
-				</div>
 
 				<Button
 					style="margin-right: 12px"
@@ -214,8 +206,8 @@ const newProduct = ref({
 	price: '',
 	section: '',
 	structure: '',
+	boxId: null, // Для элемента бокса
 	photos: [],
-	items: [],
 })
 
 const editingProduct = ref(null)
@@ -234,8 +226,8 @@ const cancelEditing = () => {
 		price: '',
 		section: '',
 		structure: '',
+		boxId: null,
 		photos: [],
-		items: [],
 	}
 }
 
@@ -246,30 +238,12 @@ const updateProduct = async () => {
 		// Перебираем все ключи newProduct.value
 		for (const key in newProduct.value) {
 			if (key === 'photos') {
-				// Если есть новые фотографии бокса, добавляем их в formData
 				if (newProduct.value.photos && newProduct.value.photos.length > 0) {
 					newProduct.value.photos.forEach(photo => {
 						formData.append('photos', photo)
 					})
 				}
-			} else if (key === 'items') {
-				// Перебираем каждый элемент бокса
-				newProduct.value.items.forEach((item, index) => {
-					// Всегда обновляем описание элементов
-					formData.append(`items[${index}][description]`, item.description)
-
-					// Если есть новые фотографии для элемента, добавляем их
-					if (item.itemPhotos && item.itemPhotos.length > 0) {
-						item.itemPhotos.forEach((photo, photoIndex) => {
-							formData.append(
-								`items[${index}][itemPhotos][${photoIndex}]`,
-								photo
-							)
-						})
-					}
-				})
 			} else {
-				// Добавляем остальные ключи (имя, описание и т.д.)
 				formData.append(key, newProduct.value[key])
 			}
 		}
@@ -285,17 +259,6 @@ const updateProduct = async () => {
 	} catch (error) {
 		console.error('Error updating product:', error)
 	}
-}
-
-const addItem = () => {
-	newProduct.value.items.push({
-		description: '',
-		itemPhotos: [],
-	})
-}
-
-const removeItem = index => {
-	newProduct.value.items.splice(index, 1)
 }
 
 const login = async () => {
@@ -328,13 +291,6 @@ const createProduct = async () => {
 				newProduct.value.photos.forEach(photo =>
 					formData.append('photos', photo)
 				)
-			} else if (key === 'items') {
-				newProduct.value.items.forEach((item, index) => {
-					formData.append(`items[${index}][description]`, item.description)
-					item.itemPhotos.forEach((photo, photoIndex) => {
-						formData.append(`items[${index}][itemPhotos][${photoIndex}]`, photo)
-					})
-				})
 			} else {
 				formData.append(key, newProduct.value[key])
 			}
@@ -352,8 +308,8 @@ const createProduct = async () => {
 			price: '',
 			section: '',
 			structure: '',
+			boxId: null,
 			photos: [],
-			items: [],
 		}
 	} catch (error) {
 		console.error('Error creating product:', error)
@@ -364,13 +320,6 @@ const handleFileUpload = event => {
 	const files = event.target.files
 	if (files.length) {
 		newProduct.value.photos = Array.from(files)
-	}
-}
-
-const handleItemFileUpload = (event, index) => {
-	const files = event.target.files
-	if (files.length) {
-		newProduct.value.items[index].itemPhotos = Array.from(files)
 	}
 }
 
