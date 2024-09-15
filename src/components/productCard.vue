@@ -375,7 +375,6 @@ const bodyStyle = computed(() => {
 	}
 	.carousel {
 		width: 100%;
-		height: 300px;
 	}
 
 	.modal__container {
@@ -390,10 +389,6 @@ const bodyStyle = computed(() => {
 }
 
 @media (max-width: 425px) {
-	.carousel {
-		width: 100%;
-		height: 420px;
-	}
 	.card__description {
 		font-size: 14px;
 	}
