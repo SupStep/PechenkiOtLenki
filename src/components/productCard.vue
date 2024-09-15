@@ -352,7 +352,7 @@ const bodyStyle = computed(() => {
 	display: flex;
 	gap: 12px;
 	position: absolute;
-	bottom: 85px;
+	bottom: 135px;
 	right: 16px;
 }
 
