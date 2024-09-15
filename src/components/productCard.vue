@@ -352,7 +352,7 @@ const bodyStyle = computed(() => {
 	display: flex;
 	gap: 12px;
 	position: absolute;
-	bottom: 135px;
+	bottom: 85зч;
 	right: 16px;
 }
 
@@ -391,6 +391,10 @@ const bodyStyle = computed(() => {
 @media (max-width: 425px) {
 	.card__description {
 		font-size: 14px;
+	}
+
+	.custom-arrow_box {
+	bottom: 135px;
 	}
 
 	.carousel {
