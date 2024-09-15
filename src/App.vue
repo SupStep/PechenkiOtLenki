@@ -84,28 +84,31 @@
 									class="footer__icon"
 									:is="instagram_logo"
 								></component>
+								<p>@pechenkiotlenki</p>
 							</a>
-							<p>@pechenkiotlenki</p>
 						</li>
 						<li class="footer__icon-item">
 							<a href="https://web.telegram.org/k/#@pechenki_otLenki">
 								<component class="footer__icon" :is="telegram_logo"></component>
+
+								<p>для связи</p>
 							</a>
-							<p>для связи</p>
 						</li>
 					</ul>
 					<ul>
 						<li class="footer__icon-item">
 							<a href="https://t.me/pechenki_SLenkoi">
 								<component class="footer__icon" :is="telegram_logo"></component>
+
+								<p>канал</p>
 							</a>
-							<p>канал</p>
 						</li>
 						<li class="footer__icon-item">
-							<span href="">
+							<a href="tel:89262100253">
 								<component class="footer__icon" :is="whatsapp_logo"></component>
-							</span>
-							<p>+79262100253</p>
+
+								<p>+79262100253</p>
+							</a>
 						</li>
 					</ul>
 				</div>
@@ -269,6 +272,12 @@ footer {
 	display: flex;
 	align-items: center;
 	gap: 8px;
+}
+
+.footer__icon-item a {
+	display: flex;
+	align-items: center;
+	gap: 6px;
 }
 
 .footer__icon-item p {

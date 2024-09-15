@@ -97,16 +97,17 @@
 		size="small"
 	>
 		<template v-if="selectedBox">
-			<n-infinite-scroll style="max-height: 80vh" :distance="10">
-				<div class="modal__container">
-					<n-carousel
-						:show-dots="false"
-						show-arrow
-						class="carousel"
-						:space-between="8"
-					>
-						<template v-if="selectedBox.photos.length || selectedBox.structure">
-							<div class="carousel-slide">
+			<div class="modal__container">
+				<n-carousel
+					:show-dots="false"
+					show-arrow
+					class="carousel"
+					:space-between="8"
+					style="max-height: 80vh"
+				>
+					<template v-if="selectedBox.photos.length || selectedBox.structure">
+						<div class="carousel-slide">
+							<n-infinite-scroll style="max-height: 80vh" :distance="10">
 								<img
 									v-if="selectedBox.photos.length"
 									class="carouselBox-img"
@@ -115,48 +116,49 @@
 										selectedBox.photos[0]
 									"
 								/>
+
 								<p
 									v-if="selectedBox.structure"
 									class="carousel-description box"
 								>
 									{{ selectedBox.structure }}
 								</p>
-							</div>
-						</template>
+							</n-infinite-scroll>
+						</div>
+					</template>
 
-						<template v-if="selectedBox.items.length">
-							<template v-for="(item, index) in selectedBox.items" :key="index">
-								<div class="carousel-slide">
-									<img
-										v-if="item.photos.length"
-										class="carouselBox-img"
-										:src="
-											'https://supstep-serverpechenki-4819.twc1.net/photos/' +
-											item.photos[0]
-										"
-									/>
-									<p v-if="item.description" class="carousel-description box">
-										{{ item.description }}
-									</p>
-								</div>
-							</template>
-						</template>
-						<template #arrow="{ prev, next }">
-							<div class="custom-arrow_box">
-								<button type="button" class="custom-arrow--left" @click="prev">
-									<component :is="arrow_back"></component>
-								</button>
-								<button type="button" class="custom-arrow--right" @click="next">
-									<component :is="arrow_forward"></component>
-								</button>
+					<template v-if="selectedBox.items.length">
+						<template v-for="(item, index) in selectedBox.items" :key="index">
+							<div class="carousel-slide">
+								<img
+									v-if="item.photos.length"
+									class="carouselBox-img"
+									:src="
+										'https://supstep-serverpechenki-4819.twc1.net/photos/' +
+										item.photos[0]
+									"
+								/>
+								<p v-if="item.description" class="carousel-description box">
+									{{ item.description }}
+								</p>
 							</div>
 						</template>
-					</n-carousel>
-					<div class="modal__info-wrapper">
-						<p>Цена: {{ selectedBox.price }}₽</p>
-					</div>
+					</template>
+					<template #arrow="{ prev, next }">
+						<div class="custom-arrow_box">
+							<button type="button" class="custom-arrow--left" @click="prev">
+								<component :is="arrow_back"></component>
+							</button>
+							<button type="button" class="custom-arrow--right" @click="next">
+								<component :is="arrow_forward"></component>
+							</button>
+						</div>
+					</template>
+				</n-carousel>
+				<div class="modal__info-wrapper">
+					<p>Цена: {{ selectedBox.price }}₽</p>
 				</div>
-			</n-infinite-scroll>
+			</div>
 		</template>
 	</n-modal>
 </template>
@@ -287,7 +289,7 @@ const bodyStyle = computed(() => {
 	width: 100%;
 	height: 340px;
 	min-width: 250px;
-	max-height: 380px;
+	max-height: 480px;
 	min-height: 320px;
 	aspect-ratio: 2/1;
 }
@@ -390,6 +392,7 @@ const bodyStyle = computed(() => {
 @media (max-width: 425px) {
 	.carousel {
 		width: 100%;
+		height: 60vh;
 	}
 	.card__description {
 		font-size: 14px;
