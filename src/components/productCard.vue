@@ -394,7 +394,7 @@ const bodyStyle = computed(() => {
 	}
 
 	.custom-arrow_box {
-	bottom: 150px;
+	bottom: 160px;
 	}
 
 	.carousel {
