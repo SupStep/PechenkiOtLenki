@@ -119,15 +119,60 @@
 				<label for="photo">Фотография товара:</label>
 				<input type="file" multiple @change="handleFileUpload" />
 
+				<label
+					v-if="editingProduct && editingProduct.type === 'box'"
+					for="boxItems"
+					>Выберите элемент бокса:</label
+				>
+				<select
+					v-if="editingProduct && editingProduct.type === 'box'"
+					v-model="selectedBoxItemId"
+					@change="fetchBoxItemDetails"
+				>
+					<option
+						v-for="item in editingProduct.items"
+						:key="item.id"
+						:value="item.id"
+					>
+						{{ item.description }}
+					</option>
+				</select>
+
+				<label v-if="selectedBoxItemId" for="boxItemDescription"
+					>Описание элемента:</label
+				>
+				<textarea
+					v-if="selectedBoxItemId"
+					v-model="boxItemDetails.description"
+					placeholder="Описание элемента бокса"
+				></textarea>
+
+				<label v-if="selectedBoxItemId" for="boxItemPhoto"
+					>Фотография элемента:</label
+				>
+				<input
+					v-if="selectedBoxItemId"
+					type="file"
+					@change="handleBoxItemFileUpload"
+				/>
+
+				<Button
+					style="grid-column-start: 1; grid-column-end: 3"
+					v-if="selectedBoxItemId"
+					@click.prevent="updateBoxItem"
+					title="Сохранить элемент бокса"
+				/>
+
 				<Button
 					style="margin-right: 12px"
-					@click.prevent="editingProduct ? updateProduct() : createProduct()"
-					:title="editingProduct ? 'Сохранить' : 'Создать'"
-				/>
-				<Button
 					v-if="editingProduct"
 					@click.prevent="cancelEditing"
 					title="Отмена"
+				/>
+
+				<Button
+					@click.prevent="editingProduct ? updateProduct() : createProduct()"
+					:title="editingProduct ? 'Сохранить' : 'Создать'"
 				/>
 			</form>
 
@@ -231,6 +276,62 @@ const cancelEditing = () => {
 	}
 }
 
+const selectedBoxItemId = ref(null)
+const boxItemDetails = ref({ description: '', photos: [] })
+
+const fetchBoxItemDetails = () => {
+	if (selectedBoxItemId.value && editingProduct.value) {
+		// Ищем бокс в массиве продуктов
+		const box = products.value.boxes.find(b => b.id === editingProduct.value.id)
+
+		if (box) {
+			// Ищем элемент бокса по ID
+			const item = box.items.find(i => i.id === selectedBoxItemId.value)
+
+			if (item) {
+				boxItemDetails.value = { ...item }
+			} else {
+				console.error('Box item not found.')
+			}
+		} else {
+			console.error('Box not found.')
+		}
+	}
+}
+
+// Обработчик загрузки файлов для элемента бокса
+const handleBoxItemFileUpload = event => {
+	const files = event.target.files
+	if (files.length) {
+		boxItemDetails.value.photos = Array.from(files)
+	}
+}
+
+const updateBoxItem = async () => {
+	try {
+		const formData = new FormData()
+
+		// Добавляем тип и описание в formData
+		formData.append('type', 'boxItem') // Тип для элемента бокса
+		formData.append('description', boxItemDetails.value.description)
+
+		// Если есть фотографии, добавляем их в formData
+		if (boxItemDetails.value.photos.length > 0) {
+			boxItemDetails.value.photos.forEach(photo => {
+				formData.append('photos', photo)
+			})
+		}
+
+		// Вызываем API для обновления элемента бокса
+		await store.editProduct(selectedBoxItemId.value, formData)
+		cancelEditing()
+		selectedBoxItemId.value = null
+		boxItemDetails.value = { description: '', photos: [] }
+	} catch (error) {
+		console.error('Error updating box item:', error)
+	}
+}
+
 const updateProduct = async () => {
 	try {
 		const formData = new FormData()
@@ -278,6 +379,7 @@ const fetchProducts = async () => {
 	try {
 		const data = await store.getAllProduct()
 		products.value = data
+		console.log(products.value)
 	} catch (error) {
 		console.error('Error fetching products:', error)
 	}
