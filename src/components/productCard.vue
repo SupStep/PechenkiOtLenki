@@ -392,6 +392,14 @@ const bodyStyle = computed(() => {
 	.card__description {
 		font-size: 14px;
 	}
+
+	.custom-arrow_box {
+	bottom: 160px;
+	}
+
+	.carousel {
+		height: 420px;
+	}
 	.card__pay-wrapper span {
 		font-size: 16px;
 	}
