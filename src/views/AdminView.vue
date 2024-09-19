@@ -380,7 +380,7 @@ const fetchProducts = async () => {
 	try {
 		const data = await store.getAllProduct()
 		products.value = data
-		console.log(products.value)
+
 	} catch (error) {
 		console.error('Error fetching products:', error)
 	}
