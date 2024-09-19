@@ -257,6 +257,7 @@ const newProduct = ref({
 
 const editingProduct = ref(null)
 const startEditing = (product, type) => {
+	window.scrollTo(0, 0)
 	editingProduct.value = { ...product, type }
 	newProduct.value = { ...editingProduct.value }
 }
