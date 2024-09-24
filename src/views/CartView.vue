@@ -28,10 +28,10 @@
 						type="text"
 						placeholder="Имя"
 					/>
-					<input
+					<MaskInput
 						class="cart__item-input"
 						v-model="personalInfo.phone"
-						type="tel"
+						mask="+7(###)###-##-##"
 						placeholder="Телефон"
 					/>
 					<input
@@ -72,6 +72,10 @@ const totalPrice = computed(() => {
 	return store.cartItems.reduce((total, item) => total + item.price, 0)
 })
 
+// Регулярные выражения для проверки телефона и почты
+const phonePattern = /^\+7\(\d{3}\)\d{3}-\d{2}-\d{2}$/
+const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
 const removeItem = index => {
 	const item = store.cartItems[index]
 	store.removeFromCart(item)
@@ -80,6 +84,28 @@ const removeItem = index => {
 const submitOrder = () => {
 	if (!isCartNotEmpty.value) return
 
+	// Проверка на пустые поля для имени и телефона
+	if (personalInfo.value.name === '' || personalInfo.value.phone === '') {
+		alert('Заполните все обязательные поля (имя и телефон)!')
+		return
+	}
+
+	// Проверка формата телефона
+	if (!phonePattern.test(personalInfo.value.phone)) {
+		alert('Номер телефона должен быть в формате +7(###)###-##-##')
+		return
+	}
+
+	// Проверка формата почты, если она введена
+	if (
+		personalInfo.value.email !== '' &&
+		!emailPattern.test(personalInfo.value.email)
+	) {
+		alert('Введите корректный email в формате example@domain.com')
+		return
+	}
+
+	// Если все проверки пройдены, отправляем заказ
 	const orderDetails = {
 		name: personalInfo.value.name,
 		email: personalInfo.value.email,
